@@ -1,4 +1,4 @@
-This lets you interact with SWI-Prolog in all Emacs buffers.
+ediprolog lets you interact with SWI-Prolog in all Emacs buffers.
 You can consult Prolog programs and evaluate embedded queries.
 
 Installation
@@ -23,7 +23,7 @@ point, `ediprolog-dwim' does the "appropriate" thing: If point is
 on a query, F10 sends the query to a Prolog process, and you
 interact with the process in the current buffer as on a terminal.
 Queries start with "?-" or ":-", possibly preceded by "%" and
-whitespace. An example of a query is (without leading ";;"):
+whitespace. An example of a query is:
 
   %?- member(X, [a,b,c]).
 
@@ -59,4 +59,4 @@ processes simultaneously. Revert with M-x ediprolog-unlocalize RET.
   C-u F10       first consult buffer, then evaluate query (if any)
   C-u C-u F10   like C-u F10, with a new process
 
-Tested with SWI-Prolog 5.6.55 + Emacs 21.2, 22.3, 23.1 and 24.3
+Tested with SWI-Prolog 5.6 and 6.6 + Emacs 21.2, 22.3, 23.1 and 24.3
