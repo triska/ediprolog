@@ -1,7 +1,11 @@
+# Introduction
+
 *ediprolog* lets you interact with SWI-Prolog in all Emacs buffers.
 You can consult Prolog programs and evaluate embedded queries.
 
-#Installation
+![Factorial](factorial.png)
+
+# Installation
 
 Copy [ediprolog.el](ediprolog.el) to your `load-path` and add to your `.emacs`:
 
@@ -13,7 +17,7 @@ Restart Emacs and customize ediprolog with
     M-x customize-group RET ediprolog RET
 
 
-#Usage
+# Usage
 
 The central function is `ediprolog-dwim` (Do What I Mean), which is
 bound to F10 by the snippet above. Depending on the content at
@@ -50,17 +54,13 @@ processes simultaneously. Revert with **M-x ediprolog-unlocalize RET**.
 
 `ediprolog-dwim` with prefix arguments has special meanings:
 
-  | Key Sequence |   Meaning                                                |
-  |--------------|----------------------------------------------------------|
-  |  C-0 F10     |   kill Prolog process                                    |
-  |  C-1 F10     |   always consult buffer (even when point is on a query)  |
-  |  C-2 F10     |   always consult buffer, using a new process             |
-  |  C-7 F10     |   equivalent to `ediprolog-toplevel'                     |
-  |  C-u F10     |   first consult buffer, then evaluate query (if any)     |
-  |  C-u C-u F10 |   like C-u F10, with a new process                       |
+| Key Sequence |   Meaning                                                |
+|--------------|----------------------------------------------------------|
+|  C-0 F10     |   kill Prolog process                                    |
+|  C-1 F10     |   always consult buffer (even when point is on a query)  |
+|  C-2 F10     |   always consult buffer, using a new process             |
+|  C-7 F10     |   equivalent to `ediprolog-toplevel'                     |
+|  C-u F10     |   first consult buffer, then evaluate query (if any)     |
+|  C-u C-u F10 |   like C-u F10, with a new process                       |
 
 Tested with SWI-Prolog 5.6 and 6.6 + Emacs 21.2, 22.3, 23.1 and 24.3
-
-**Screenshot**
-
-![Factorial](factorial.png)
