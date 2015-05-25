@@ -3,6 +3,8 @@
 *ediprolog* lets you interact with SWI-Prolog in all Emacs buffers.
 You can consult Prolog programs and evaluate embedded queries.
 
+**Screenshot**
+
 ![Factorial](factorial.png)
 
 # Installation
@@ -39,7 +41,7 @@ If you press F10 when point is on that query, you get:
 
 When waiting for output of the Prolog process, you can press C-g to
 unblock Emacs and continue with other work. To resume interaction
-with the Prolog process, use M-x ediprolog-toplevel RET.
+with the Prolog process, use **M-x&nbsp;ediprolog-toplevel&nbsp;RET**.
 
 If you press F10 when point is *not* on a query, the buffer content
 is consulted in the Prolog process, and point is moved to the first
@@ -50,7 +52,8 @@ process are logged in the buffer `*ediprolog-history*`.
 
 Use **M-x ediprolog-localize RET** to make any Prolog process started
 in the current buffer buffer-local. This way, you can run distinct
-processes simultaneously. Revert with **M-x ediprolog-unlocalize RET**.
+processes simultaneously. Revert with
+**M-x&nbsp;ediprolog-unlocalize&nbsp;RET**.
 
 `ediprolog-dwim` with prefix arguments has special meanings:
 
@@ -63,4 +66,4 @@ processes simultaneously. Revert with **M-x ediprolog-unlocalize RET**.
 |  C-u F10     |   first consult buffer, then evaluate query (if any)     |
 |  C-u C-u F10 |   like C-u F10, with a new process                       |
 
-Tested with SWI-Prolog 5.6 and 6.6 + Emacs 21.2, 22.3, 23.1 and 24.3
+Tested with SWI-Prolog 5.6, 6.6 and 7.2 + Emacs 21.2, 22.3, 23.1 and 24.3.
