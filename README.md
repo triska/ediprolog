@@ -45,8 +45,8 @@ with the Prolog process, use **M-x&nbsp;ediprolog-toplevel&nbsp;RET**.
 
 If you press F10 when point is *not* on a query, the buffer content is
 consulted in the Prolog process, and point is moved to the first error
-(if any). Note that you do&nbsp;*not* need to *save* the file, since
-it is the *buffer&nbsp;content* (not the file) that is consulted.
+(if any). You do&nbsp;*not* need to *save* the file beforehand, since
+the *buffer&nbsp;content* (not the file) is consulted.
 
 For convenience, the most recent interactions with the Prolog
 process are logged in the buffer `*ediprolog-history*`.
