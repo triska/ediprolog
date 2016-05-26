@@ -43,9 +43,10 @@ When waiting for output of the Prolog process, you can press C-g to
 unblock Emacs and continue with other work. To resume interaction
 with the Prolog process, use **M-x&nbsp;ediprolog-toplevel&nbsp;RET**.
 
-If you press F10 when point is *not* on a query, the buffer content
-is consulted in the Prolog process, and point is moved to the first
-error (if any).
+If you press F10 when point is *not* on a query, the buffer content is
+consulted in the Prolog process, and point is moved to the first error
+(if any). Note that you do&nbsp;*not* need to *save* the file, since
+it is the *buffer&nbsp;content* (not the file) that is consulted.
 
 For convenience, the most recent interactions with the Prolog
 process are logged in the buffer `*ediprolog-history*`.
