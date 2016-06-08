@@ -90,14 +90,14 @@
 (defconst ediprolog-version "0.9z")
 
 (defgroup ediprolog nil
-  "Transparent interaction with SWI-Prolog."
+  "Transparent interaction with Prolog."
   :group 'languages
   :group 'processes)
 
 ;;;###autoload
-(defcustom ediprolog-program
-  (or (executable-find "swipl") (executable-find "pl") "swipl")
-  "Program name of the Prolog executable."
+(defcustom ediprolog-system
+  "swi"
+  "Type of the Prolog system. Can be swi or xsb."
   :group 'ediprolog
   :type 'string)
 
@@ -112,6 +112,16 @@
 (defcustom ediprolog-prefix "%@ "
   "String to prepend when inserting output from the Prolog
 process into the buffer."
+  :group 'ediprolog
+  :type 'string)
+
+(defcustom ediprolog-swi-exe "swipl"
+  "Name of the SWI executable in the system."
+  :group 'ediprolog
+  :type 'string)
+
+(defcustom ediprolog-xsb-exe "mingw32_xsb.bat"
+  "Name of the XSB executable in the system."
   :group 'ediprolog
   :type 'string)
 
@@ -153,6 +163,30 @@ default Prolog prompt.")
 
 (defvar ediprolog-interrupted           nil
   "True iff waiting for the previous query was interrupted with C-g.")
+
+(require 'cl-lib)
+(cl-defstruct (ediprolog-params (:constructor ediprolog-make-params))
+  program program-switches init)
+
+(defvar ediprolog-swi-params
+  (ediprolog-make-params
+   :program (lambda () (executable-find ediprolog-swi-exe))
+   :program-switches nil
+   :init (concat "set_prolog_flag(color_term, false),"
+		 (if (eq system-type 'windows-nt) "set_stream(user_input, tty(true)), set_stream(user_output, tty(true))," "")
+		 (format "'$set_prompt'('%s').\n" ediprolog-prompt))
+   ))
+
+(defvar ediprolog-xsb-params
+  (ediprolog-make-params
+   :program (lambda () (executable-find ediprolog-xsb-exe))
+   :program-switches '("-e" "'import prompt/2 from machine.'")
+   :init (format "prompt('%s', _).\n" ediprolog-prompt)))
+
+(defun ediprolog-params-in-effect ()
+  (cond
+   ((string= ediprolog-system "xsb") ediprolog-xsb-params)
+   (t ediprolog-swi-params)))
 
 (defmacro ediprolog-wait-for-prompt-after (&rest forms)
   "Evaluate FORMS and wait for prompt."
@@ -220,23 +254,28 @@ default Prolog prompt.")
 
 (defun ediprolog-run-prolog ()
   "Start a Prolog process."
-  (let ((args (cons ediprolog-program ediprolog-program-switches)))
+  (let ((args (cons
+	       (funcall (ediprolog-params-program (ediprolog-params-in-effect)))
+	       (append ediprolog-program-switches
+		       (ediprolog-params-program-switches
+			(ediprolog-params-in-effect)))
+	       )))
     (ediprolog-log (format "%s: starting: %S\n"
                            (substring (current-time-string) 4 -5) args)
                    "green" t)
     (condition-case nil
         (ediprolog-wait-for-prompt-after
-         (setq ediprolog-process
-               (apply #'start-process "ediprolog" (current-buffer) args))
+         (let ((w32-quote-process-args nil))
+	  (setq ediprolog-process
+               (apply #'start-process "ediprolog" (current-buffer) args)))
          (set-process-sentinel ediprolog-process 'ediprolog-sentinel)
          (set-process-filter ediprolog-process
                              'ediprolog-wait-for-prompt-filter)
          (ediprolog-send-string
-          (format "set_prolog_flag(color_term, false),\
-                  '$set_prompt'('%s').\n" ediprolog-prompt)))
+          (ediprolog-params-init (ediprolog-params-in-effect))))
       ((error quit)
        (ediprolog-log "No prompt found." "red" t)
-       (error "No prompt from: %s" ediprolog-program)))))
+       (error "No prompt from: %s" ediprolog-system)))))
 
 (defun ediprolog-kill-prolog ()
   "Kill the Prolog process and run the process sentinel."
@@ -412,7 +451,7 @@ want to resume interaction with the toplevel."
                                   (with-timeout (0.1 nil)
                                     (read-char))))
                  ;; char-to-string might still yield an error (C-0 etc.)
-                 (setq str (char-to-string char)))
+                 (setq str (concat (char-to-string char) "\n")))
              (error
               (message "Non-character key")
               ;; non-character keys must not remain in the input
@@ -584,7 +623,7 @@ is active."
 (defun ediprolog-map-variables (func)
   "Call FUNC with all ediprolog variables that can become buffer-local."
   (mapc func '(ediprolog-process
-               ediprolog-program
+               ediprolog-system
                ediprolog-program-switches
                ediprolog-temp-buffer
                ediprolog-history-buffer
