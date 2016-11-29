@@ -1,8 +1,8 @@
 ;;; ediprolog.el --- Emacs Does Interactive Prolog
 
-;; Copyright (C) 2006, 2007, 2008, 2009, 2012, 2013  Markus Triska
+;; Copyright (C) 2006, 2007, 2008, 2009, 2012, 2013, 2016  Markus Triska
 
-;; Author: Markus Triska <markus.triska@gmx.at>
+;; Author: Markus Triska <triska@metalevel.at>
 ;; Keywords: languages, processes
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -16,9 +16,7 @@
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with GNU Emacs; see the file COPYING.  If not, write to
-;; the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-;; Boston, MA 02110-1301, USA.
+;; along with GNU Emacs.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
@@ -83,32 +81,29 @@
 ;;   C-u F10       first consult buffer, then evaluate query (if any)
 ;;   C-u C-u F10   like C-u F10, with a new process
 
-;; Tested with SWI-Prolog 5.6.55 + Emacs 21.2, 22.3, 23.1 and 24.3
+;; Tested with SWI-Prolog 7.3.21 + Emacs 22.1, 23.4, 24.5, 25.1 and 26.0
 
 ;;; Code:
 
-(defconst ediprolog-version "0.9z")
+(defconst ediprolog-version "1.2-PRE")
 
 (defgroup ediprolog nil
   "Transparent interaction with SWI-Prolog."
   :group 'languages
   :group 'processes)
 
-;;;###autoload
 (defcustom ediprolog-program
   (or (executable-find "swipl") (executable-find "pl") "swipl")
   "Program name of the Prolog executable."
   :group 'ediprolog
   :type 'string)
 
-;;;###autoload
 (defcustom ediprolog-program-switches nil
   "List of switches passed to the Prolog process. Example:
 '(\"-G128M\" \"-O\")"
   :group 'ediprolog
   :type '(repeat string))
 
-;;;###autoload
 (defcustom ediprolog-prefix "%@ "
   "String to prepend when inserting output from the Prolog
 process into the buffer."
@@ -348,13 +343,18 @@ arguments, equivalent to `ediprolog-remove-interactions'."
                    ;; omit trailing whitespace
                    (+ (point) (skip-chars-backward "\t "))
                  (error "Missing `.' at the end of this query")))
-           (query (buffer-substring-no-properties from to)))
+           (query (buffer-substring-no-properties from to))
+           (handle (and (fboundp 'prepare-change-group)
+                        (fboundp 'undo-amalgamate-change-group)
+                        (cons t (prepare-change-group)))))
       (end-of-line)
       (insert "\n" ediprolog-indent-prefix ediprolog-prefix)
       (ediprolog-interact
        (format "%s\n" (mapconcat #'identity
                                  ;; `%' can precede each query line
-                                 (split-string query "\n[ \t%]*") " "))))
+                                 (split-string query "\n[ \t%]*") " ")))
+      (when handle
+        (undo-amalgamate-change-group (cdr handle))))
     t))
 
 ;;;###autoload
