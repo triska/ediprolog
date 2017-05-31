@@ -1,9 +1,10 @@
 ;;; ediprolog.el --- Emacs Does Interactive Prolog
 
-;; Copyright (C) 2006, 2007, 2008, 2009, 2012, 2013, 2016  Markus Triska
+;; Copyright (C) 2006, 2007, 2008, 2009, 2012, 2013, 2016, 2017  Markus Triska
 
 ;; Author: Markus Triska <triska@metalevel.at>
 ;; Keywords: languages, processes
+;; Homepage: https://www.metalevel.at/ediprolog/
 
 ;; This file is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -61,9 +62,10 @@
 ;; unblock Emacs and continue with other work. To resume interaction
 ;; with the Prolog process, use M-x ediprolog-toplevel RET.
 
-;; If you press F10 when point is NOT on a query, the buffer content
+;; If you press F10 when point is *not* on a query, the buffer content
 ;; is consulted in the Prolog process, and point is moved to the first
-;; error (if any).
+;; error (if any). In transient mark mode, if the region is active,
+;; only the text in the region is consulted.
 
 ;; For convenience, the most recent interactions with the Prolog
 ;; process are logged in the buffer "*ediprolog-history*".
@@ -85,7 +87,7 @@
 
 ;;; Code:
 
-(defconst ediprolog-version "1.2-PRE")
+(defconst ediprolog-version "1.2")
 
 (defgroup ediprolog nil
   "Transparent interaction with SWI-Prolog."
@@ -428,8 +430,8 @@ want to resume interaction with the toplevel."
 (defun ediprolog-remove-interactions ()
   "Remove all lines starting with `ediprolog-prefix' from buffer.
 
-In transient mark mode, the function operates on the region if it
-is active."
+In transient mark mode, if the region is active, the function
+operates on the region."
   (interactive)
   (save-excursion
     (save-restriction
@@ -447,8 +449,8 @@ non-nil, start a new process. Otherwise use the existing process,
 if any. In case of errors, point is moved to the position of the
 first error, and the mark is left at the previous position.
 
-In transient mark mode, the function operates on the region if it
-is active."
+In transient mark mode, if the region is active, the function
+operates on the region."
   (interactive)
   (when (string= (buffer-name) ediprolog-consult-buffer)
     (error "Cannot consult the consult buffer"))
