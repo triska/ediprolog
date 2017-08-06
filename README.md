@@ -68,3 +68,7 @@ processes simultaneously. Revert with
 |  C-u C-u F10 |   like C-u F10, with a new process                       |
 
 Tested with SWI-Prolog 5.6, 6.6 and 7.2 + Emacs 21.2, 22.3, 23.1 and 24.3.
+
+More information is available at:
+
+[**https://www.metalevel.at/ediprolog/**](https://www.metalevel.at/ediprolog/)
