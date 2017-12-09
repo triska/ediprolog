@@ -7,6 +7,8 @@ You can consult Prolog programs and evaluate embedded queries.
 
 [**https://www.metalevel.at/ediprolog/**](https://www.metalevel.at/ediprolog/)
 
+See also [PceProlog](https://www.metalevel.at/pceprolog/).
+
 # Installation
 
 Copy [ediprolog.el](ediprolog.el) to your `load-path` and add to your `.emacs`:
