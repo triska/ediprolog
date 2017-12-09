@@ -7,10 +7,6 @@ You can consult Prolog programs and evaluate embedded queries.
 
 [**https://www.metalevel.at/ediprolog/**](https://www.metalevel.at/ediprolog/)
 
-**Screenshot**
-
-![Factorial](factorial.png)
-
 # Installation
 
 Copy [ediprolog.el](ediprolog.el) to your `load-path` and add to your `.emacs`:
@@ -22,6 +18,13 @@ Restart Emacs and customize ediprolog with
 
     M-x customize-group RET ediprolog RET
 
+# Screenshot
+
+Here is a sample interaction, using
+[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd) to
+relate a number to its factorial:
+
+![Factorial](factorial.png)
 
 # Usage
 
