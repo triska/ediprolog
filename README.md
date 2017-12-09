@@ -11,7 +11,13 @@ See also [PceProlog](https://www.metalevel.at/pceprolog/).
 
 # Installation
 
-Copy [ediprolog.el](ediprolog.el) to your `load-path` and add to your `.emacs`:
+With Emacs&ge;24.1, the simplest way to install ediprolog is to use
+Emacs's built-in *package&nbsp;manager* via the key sequence:
+
+    M-x package-install RET ediprolog RET
+
+Alternatively, copy [ediprolog.el](ediprolog.el) to your `load-path`
+and add to your `.emacs`:
 
     (require 'ediprolog)
     (global-set-key [f10] 'ediprolog-dwim)
