@@ -17,32 +17,30 @@ Emacs's built-in *package&nbsp;manager* via the key sequence:
     M-x package-install RET ediprolog RET
 
 Alternatively, copy [ediprolog.el](ediprolog.el) to your `load-path`
-and add to your `.emacs`:
+and add the following form to your `.emacs`, then evaluate the form or
+restart&nbsp;Emacs:
 
     (require 'ediprolog)
-    (global-set-key [f10] 'ediprolog-dwim)
 
-Restart Emacs and customize ediprolog with
+After you have installed ediprolog, you can customize it with:
 
     M-x customize-group RET ediprolog RET
 
-# Screenshot
-
-Here is a sample interaction, using
-[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd) to
-relate a number to its factorial:
-
-![Factorial](factorial.png)
-
 # Usage
 
-The central function is `ediprolog-dwim` (Do What I Mean), which is
-bound to F10 by the snippet above. Depending on the content at
-point, `ediprolog-dwim` does the "appropriate" thing: If point is
-on a *query*, F10 sends the query to a Prolog process, and you
-interact with the process in the current buffer as on a terminal.
-Queries start with "?-" or ":-", possibly preceded by "%" and
-whitespace. An example of a query is:
+The central function is `ediprolog-dwim` (Do What I Mean). I recommend
+to bind it to the function&nbsp;key&nbsp;F10 by adding the following
+form to your&nbsp;`.emacs` and evaluating it:
+
+    (global-set-key [f10] 'ediprolog-dwim)
+
+In the following, I assume that you have also done this.
+
+Depending on the content at point, `ediprolog-dwim` does the
+"appropriate" thing: If point is on a *query*, it sends the query to a
+Prolog process, and you interact with the process in the current
+buffer as on a terminal. Queries start with "?-" or ":-", possibly
+preceded by "%" and whitespace. An example of a query is:
 
     %?- member(X, [a,b,c]).
 
@@ -83,3 +81,11 @@ processes simultaneously. Revert with
 |  C-u C-u F10 |   like C-u F10, with a new process                       |
 
 Tested with SWI-Prolog 5.6, 6.6 and 7.2 + Emacs 21.2, 22.3, 23.1 and 24.3.
+
+# Screenshot
+
+Here is a sample interaction, using
+[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd) to
+relate a number to its factorial:
+
+![Factorial](factorial.png)
