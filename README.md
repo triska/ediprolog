@@ -7,6 +7,10 @@ You can consult Prolog programs and evaluate embedded queries.
 
 [**https://www.metalevel.at/ediprolog/**](https://www.metalevel.at/ediprolog/)
 
+**Video**:
+
+[https://www.metalevel.at/prolog/videos/ediprolog](https://www.metalevel.at/prolog/videos/ediprolog)
+
 See also [PceProlog](https://www.metalevel.at/pceprolog/).
 
 # Installation
