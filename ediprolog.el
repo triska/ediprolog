@@ -224,7 +224,7 @@ default Prolog prompt.")
     (condition-case nil
         (ediprolog-wait-for-prompt-after
          (setq ediprolog-process
-               (apply #'start-process "ediprolog" (current-buffer) args))
+               (apply #'start-file-process "ediprolog" (current-buffer) args))
          (set-process-sentinel ediprolog-process 'ediprolog-sentinel)
          (set-process-filter ediprolog-process
                              'ediprolog-wait-for-prompt-filter)
@@ -469,8 +469,12 @@ operates on the region."
     (ediprolog-run-prolog))
   (ediprolog-process-ready)
   (set-process-buffer ediprolog-process (current-buffer))
-  (unless ediprolog-temp-file
-    (setq ediprolog-temp-file (make-temp-file "ediprolog")))
+  (when (or (null ediprolog-temp-file)
+            (and buffer-file-name
+                 (or (file-remote-p buffer-file-name)
+                     (not (eq (file-remote-p ediprolog-temp-file)
+                              (file-remote-p buffer-file-name))))))
+    (setq ediprolog-temp-file (make-nearby-temp-file "ediprolog")))
   (let ((start (if (and transient-mark-mode mark-active)
                    (region-beginning) (point-min)))
         (end (if (and transient-mark-mode mark-active)
@@ -479,7 +483,8 @@ operates on the region."
   (set-process-filter ediprolog-process 'ediprolog-consult-filter)
   (ediprolog-remember-interruption
    (ediprolog-wait-for-prompt-after
-    (ediprolog-send-string (format "['%s'].\n" ediprolog-temp-file))))
+    (ediprolog-send-string (format "['%s'].\n"
+                                   (file-local-name ediprolog-temp-file)))))
   (message "%s consulted." (if (and transient-mark-mode mark-active)
                                "Region" "Buffer"))
   ;; go to line of the first error, if any
