@@ -1,6 +1,6 @@
 ;;; ediprolog.el --- Emacs Does Interactive Prolog
 
-;; Copyright (C) 2006, 2007, 2008, 2009, 2012, 2013, 2016, 2017  Markus Triska
+;; Copyright (C) 2006-2019  Markus Triska
 
 ;; Author: Markus Triska <triska@metalevel.at>
 ;; Keywords: languages, processes
@@ -558,8 +558,11 @@ operates on the region."
             (goto-char (point-min))
             (while (search-forward "\n" nil t)
               (replace-match
-               (format "\n%s%s" (with-current-buffer (process-buffer proc)
-                                  ediprolog-indent-prefix) ediprolog-prefix)))
+               (format "\n%s%s"
+                       (buffer-local-value 'ediprolog-indent-prefix
+                                           (process-buffer proc))
+                       (buffer-local-value 'ediprolog-prefix
+                                           (process-buffer proc)))))
             (setq str (buffer-string)))
           (with-current-buffer (process-buffer proc)
             (let ((near (<= (abs (- (point) (process-mark proc))) 1)))
@@ -598,6 +601,7 @@ operates on the region."
                ediprolog-interrupted
                ediprolog-read-term
                ediprolog-indent-prefix
+               ediprolog-prefix
                ediprolog-temp-file)))
 
 ;;;###autoload
