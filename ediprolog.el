@@ -471,9 +471,8 @@ operates on the region."
   (set-process-buffer ediprolog-process (current-buffer))
   (when (or (null ediprolog-temp-file)
             (and buffer-file-name
-                 (or (file-remote-p buffer-file-name)
-                     (not (eq (file-remote-p ediprolog-temp-file)
-                              (file-remote-p buffer-file-name))))))
+                 (not (equal (file-remote-p ediprolog-temp-file)
+                             (file-remote-p buffer-file-name)))))
     (setq ediprolog-temp-file (make-nearby-temp-file "ediprolog")))
   (let ((start (if (and transient-mark-mode mark-active)
                    (region-beginning) (point-min)))
