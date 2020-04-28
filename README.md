@@ -1,6 +1,6 @@
 # Introduction
 
-*ediprolog* lets you interact with SWI-Prolog in all Emacs buffers.
+*ediprolog* lets you interact with Prolog in all Emacs buffers.
 You can consult Prolog programs and evaluate embedded queries.
 
 **Project page**:
@@ -29,6 +29,11 @@ restart&nbsp;Emacs:
 After you have installed ediprolog, you can customize it with:
 
     M-x customize-group RET ediprolog RET
+
+The two most important configuration options are:
+
+   - `ediprolog-system`, either `scryer` or `swi`
+   - `ediprolog-program`, the path of the Prolog executable.
 
 # Usage
 
@@ -84,7 +89,8 @@ processes simultaneously. Revert with
 |  C-u F10     |   first consult buffer, then evaluate query (if any)     |
 |  C-u C-u F10 |   like C-u F10, with a new process                       |
 
-Tested with SWI-Prolog 5.6, 6.6 and 7.2 + Emacs 21.2, 22.3, 23.1 and 24.3.
+Tested with Scryer Prolog 0.8.119 and SWI-Prolog 8.1.24, using Emacs
+version&nbsp;27.0.50.
 
 # Screenshot
 
