@@ -56,10 +56,10 @@ preceded by "%" and whitespace. An example of a query is:
 If you press F10 when point is on that query, you get:
 
     %?- member(X, [a,b,c]).
-    %@ X = a ;
-    %@ X = b ;
-    %@ X = c ;
-    %@ false.
+    %@    X = a
+    %@ ;  X = b
+    %@ ;  X = c
+    %@ ;  false.
 
 When waiting for output of the Prolog process, you can press C-g to
 unblock Emacs and continue with other work. To resume interaction
@@ -90,7 +90,7 @@ processes simultaneously. Revert with
 |  C-u C-u F10 |   like C-u F10, with a new process                       |
 
 Tested with Scryer Prolog 0.8.119 and SWI-Prolog 8.1.24, using Emacs
-version&nbsp;27.0.50.
+versions 26.1 and&nbsp;27.0.50.
 
 # Screenshot
 
