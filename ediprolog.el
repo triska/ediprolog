@@ -57,10 +57,10 @@
 ;; If you press F10 when point is on that query, you get:
 ;;
 ;;   %?- member(X, [a,b,c]).
-;;   %@ X = a ;
-;;   %@ X = b ;
-;;   %@ X = c ;
-;;   %@ false.
+;;   %@    X = a
+;;   %@ ;  X = b
+;;   %@ ;  X = c
+;;   %@ ;  false.
 ;;
 ;; When waiting for output of the Prolog process, you can press C-g to
 ;; unblock Emacs and continue with other work. To resume interaction
@@ -88,11 +88,11 @@
 ;;   C-u C-u F10   like C-u F10, with a new process
 
 ;; Tested with Scryer Prolog 0.8.119 and SWI-Prolog 8.1.24,
-;; using Emacs version 27.0.50.
+;; using Emacs versions 26.1 and 27.0.50.
 
 ;;; Code:
 
-(defconst ediprolog-version "2.0")
+(defconst ediprolog-version "2.1")
 
 (defgroup ediprolog nil
   "Transparent interaction with Prolog."
@@ -512,10 +512,13 @@ operates on the region."
                         (re-search-forward "^ERROR.*?:\\([0-9]+\\)" nil t))
                   (string-to-number (match-string 1))))))
     (when line
-      (if (and transient-mark-mode mark-active)
-          (when (fboundp 'line-number-at-pos)
-            (goto-line (+ (line-number-at-pos (region-beginning)) line -1)))
-        (goto-line line)))))
+      (let ((p (point)))
+        (goto-char (if (and transient-mark-mode mark-active)
+                       (region-beginning)
+                     (point-min)))
+        ;; doing this first would affect (region-beginning)
+        (push-mark p))
+      (forward-line (1- line)))))
 
 (defun ediprolog-running ()
   "True iff `ediprolog-process' is a running process."
