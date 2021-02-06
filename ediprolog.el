@@ -1,6 +1,6 @@
 ;;; ediprolog.el --- Emacs Does Interactive Prolog
 
-;; Copyright (C) 2006-2020  Markus Triska
+;; Copyright (C) 2006-2021  Markus Triska
 
 ;; Author: Markus Triska <triska@metalevel.at>
 ;; Keywords: languages, processes
@@ -38,7 +38,7 @@
 ;;
 ;; The two most important configuration options are:
 ;;
-;;    - `ediprolog-system', either 'scryer or 'swi
+;;    - `ediprolog-system', either 'scryer (default) or 'swi
 ;;    - `ediprolog-program', the path of the Prolog executable.
 
 ;; Usage
@@ -92,7 +92,7 @@
 
 ;;; Code:
 
-(defconst ediprolog-version "2.1")
+(defconst ediprolog-version "2.2-PRE")
 
 (defgroup ediprolog nil
   "Transparent interaction with Prolog."
@@ -490,7 +490,11 @@ operates on the region."
             (and buffer-file-name
                  (not (equal (file-remote-p ediprolog-temp-file)
                              (file-remote-p buffer-file-name)))))
-    (setq ediprolog-temp-file (make-nearby-temp-file "ediprolog")))
+    (setq ediprolog-temp-file
+          (funcall (if (fboundp 'make-nearby-temp-file)
+                       'make-nearby-temp-file
+                     'make-temp-file)
+                   "ediprolog")))
   (let ((start (if (and transient-mark-mode mark-active)
                    (region-beginning) (point-min)))
         (end (if (and transient-mark-mode mark-active)
