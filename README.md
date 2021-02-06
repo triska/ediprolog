@@ -32,7 +32,7 @@ After you have installed ediprolog, you can customize it with:
 
 The two most important configuration options are:
 
-   - `ediprolog-system`, either `scryer` or `swi`
+   - `ediprolog-system`, either `scryer` (default) or `swi`
    - `ediprolog-program`, the path of the Prolog executable.
 
 # Usage
