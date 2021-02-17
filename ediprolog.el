@@ -92,7 +92,7 @@
 
 ;;; Code:
 
-(defconst ediprolog-version "2.2-PRE")
+(defconst ediprolog-version "2.2-PRE2")
 
 (defgroup ediprolog nil
   "Transparent interaction with Prolog."
@@ -272,9 +272,9 @@ set_prolog_flag(toplevel_prompt, '%s').\n" (ediprolog-prompt)))))
   ;; success (i.e., consulted without errors), or still an incomplete
   ;; line that starts with a comment character
   (unless (or (string-match "^[\t ]*\\(?:%.*\\)?\\'" str)
-              (let ((success "true."))
-                (and (<= (length str) (length success))
-                     (string= str (substring success 0 (length str))))))
+              (string-prefix-p str "true.")
+              ;; newer versions of Scryer Prolog prepend 3 spaces to "true."
+              (string-prefix-p str "   true."))
     (setq ediprolog-consult-window (display-buffer ediprolog-consult-buffer))
     (set-window-dedicated-p ediprolog-consult-window t)
     (fit-window-to-buffer ediprolog-consult-window (/ (frame-height) 2))))
