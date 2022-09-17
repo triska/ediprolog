@@ -51,11 +51,11 @@ Prolog process, and you interact with the process in the current
 buffer as on a terminal. Queries start with "?-" or ":-", possibly
 preceded by "%" and whitespace. An example of a query is:
 
-    %?- member(X, [a,b,c]).
+    %?- member(X, "abc").
 
 If you press F10 when point is on that query, you get:
 
-    %?- member(X, [a,b,c]).
+    %?- member(X, "abc").
     %@    X = a
     %@ ;  X = b
     %@ ;  X = c
