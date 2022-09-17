@@ -1,6 +1,6 @@
 ;;; ediprolog.el --- Emacs Does Interactive Prolog
 
-;; Copyright (C) 2006-2021  Markus Triska
+;; Copyright (C) 2006-2022  Markus Triska
 
 ;; Author: Markus Triska <triska@metalevel.at>
 ;; Keywords: languages, processes
@@ -52,11 +52,11 @@
 ;; Queries start with "?-" or ":-", possibly preceded by "%" and
 ;; whitespace. An example of a query is (without leading ";;"):
 ;;
-;;   %?- member(X, [a,b,c]).
+;;   %?- member(X, "abc").
 ;;
 ;; If you press F10 when point is on that query, you get:
 ;;
-;;   %?- member(X, [a,b,c]).
+;;   %?- member(X, "abc").
 ;;   %@    X = a
 ;;   %@ ;  X = b
 ;;   %@ ;  X = c
@@ -92,7 +92,7 @@
 
 ;;; Code:
 
-(defconst ediprolog-version "2.2-PRE2")
+(defconst ediprolog-version "2.2-PRE4")
 
 (defgroup ediprolog nil
   "Transparent interaction with Prolog."
@@ -369,9 +369,19 @@ arguments, equivalent to `ediprolog-remove-interactions'."
       (end-of-line)
       (insert "\n" ediprolog-indent-prefix ediprolog-prefix)
       (ediprolog-interact
-       (format "%s\n" (mapconcat #'identity
+       (format "%s\n"
+               (if (eq ediprolog-system 'scryer)
+                   ;; Scryer Prolog emits no additional indicators
+                   ;; when a query spans multiple lines, so we send
+                   ;; the query verbatim.
+                   query
+                 ;; For other Prolog systems, we merge the query into
+                 ;; a single line. The drawback of this approach is
+                 ;; that single-line comments at the end of a line are
+                 ;; not handled correctly.
+                 (mapconcat #'identity
                                  ;; `%' can precede each query line
-                                 (split-string query "\n[ \t%]*") " ")))
+                                 (split-string query "\n[ \t%]*") " "))))
       (when handle
         (undo-amalgamate-change-group (cdr handle))))
     t))
