@@ -95,7 +95,7 @@ versions 26.1 and&nbsp;27.0.50.
 # Screenshot
 
 Here is a sample interaction, using
-[CLP(FD)&nbsp;constraints](https://www.metalevel.at/prolog/clpfd) to
+[CLP(ℤ)&nbsp;constraints](https://www.metalevel.at/prolog/clpz) to
 relate a number to its factorial:
 
 ![Factorial](factorial.png)
