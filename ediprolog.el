@@ -92,7 +92,7 @@
 
 ;;; Code:
 
-(defconst ediprolog-version "2.2-PRE4")
+(defconst ediprolog-version "2.2")
 
 (defgroup ediprolog nil
   "Transparent interaction with Prolog."
