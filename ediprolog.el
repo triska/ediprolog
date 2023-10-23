@@ -239,8 +239,9 @@ nil to never truncate the history."
                    "green" t)
     (condition-case nil
         (ediprolog-wait-for-prompt-after
-         (setq ediprolog-process
-               (apply #'start-file-process "ediprolog" (current-buffer) args))
+         (let ((process-environment (cons "EMACS=t" process-environment)))
+           (setq ediprolog-process
+                 (apply #'start-file-process "ediprolog" (current-buffer) args)))
          (set-process-sentinel ediprolog-process 'ediprolog-sentinel)
          (set-process-filter ediprolog-process
                              'ediprolog-wait-for-prompt-filter)
@@ -441,7 +442,9 @@ want to resume interaction with the toplevel."
                                   (with-timeout (0.1 nil)
                                     (read-char))))
                  ;; char-to-string might still yield an error (C-0 etc.)
-                 (setq str (char-to-string char)))
+                 (setq str (concat (char-to-string char) "\n"))
+                 (ediprolog-insert-at-marker
+                  str ediprolog-indent-prefix ediprolog-prefix))
              (error
               (message "Non-character key")
               ;; non-character keys must not remain in the input
